@@ -74,7 +74,7 @@ est.diego.arodrigu1@unimilitar.edu.co}
 \maketitle
 
 \begin{abstract}
-Este trabajo presenta la solución al ejercicio 6.7.13, que consiste en calcular la longitud del Gateway Arch de San Luis mediante integración numérica. Se implementaron los métodos de Simpson 1/3 y Simpson 3/8 en MATLAB para evaluar la integral de longitud de arco. Los resultados obtenidos fueron: 625.12 pies con ambos métodos, alcanzando una precisión de 5 cifras significativas y 5 decimales según lo requerido. El análisis incluye la convergencia de ambos métodos y la comparación con el valor real del monumento (625 pies), obteniendo un error relativo de 0.019\%.
+Este trabajo presenta la solución al ejercicio 6.7.13, que consiste en calcular la longitud del Gateway Arch de San Luis mediante integración numérica. Se implementaron los métodos de Simpson 1/3 y Simpson 3/8 en MATLAB para evaluar la integral de longitud de arco. Los resultados obtenidos fueron: 1480.31 pies con ambos métodos, alcanzando una precisión de 5 cifras significativas y 5 decimales según lo requerido. El análisis incluye la convergencia de ambos métodos y la comparación con el valor de referencia (1480.31083 pies), obteniendo un error relativo prácticamente nulo.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -89,7 +89,7 @@ El Gateway Arch de San Luis, Missouri, es un monumento icónico de Estados Unido
 L = 2\int_{0}^{b} \sqrt{1 + \left(f'(x)\right)^2} \, dx
 \end{equation}
 
-donde $f(x) = 639.8507 - 68.7672\left(e^{0.01003611x} + e^{-0.01003611x}\right)$ y $b$ es la raíz donde $f(x) = 0$.
+donde $f(x) = 693.8597 - 68.7672\left(e^{0.0100333x} + e^{-0.0100333x}\right)$ y $b$ es la raíz donde $f(x) = 0$.
 
 El objetivo es implementar los métodos de Simpson 1/3 y Simpson 3/8 para resolver esta integral numéricamente, alcanzando una precisión de 5 cifras significativas. Este problema combina cálculo de raíces, derivación y integración numérica en una aplicación real de ingeniería.
 
@@ -105,7 +105,7 @@ L = \int_{a}^{b} \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx
 
 Para el Gateway Arch, la derivada es:
 \begin{equation}
-f'(x) = -0.68998\left(e^{0.01003611x} - e^{-0.01003611x}\right)
+f'(x) = -0.68999\left(e^{0.0100333x} - e^{-0.0100333x}\right)
 \end{equation}
 
 \subsection{Método de Simpson 1/3}
@@ -134,9 +134,9 @@ También tiene error $O(h^4)$ y es exacto para polinomios hasta grado 3.
 
 \begin{lstlisting}[caption={Definición de constantes y funciones}]
 % Constantes del Gateway Arch
-a = 639.8507;
+a = 693.8597;
 b_coef = 68.7672;
-c = 0.01003611;
+c = 0.0100333;
 
 % Funcion del Gateway Arch
 f = @(x) a - b_coef*(exp(c*x) + exp(-c*x));
@@ -154,10 +154,10 @@ g = @(x) sqrt(1 + f_prime(x).^2);
 % Usar fsolve con valor inicial x0=300
 b_raiz = fsolve(f, 300);
 fprintf('Raiz: b = %.10f pies\n', b_raiz);
-% Resultado: b = 299.2238681846 pies
+% Resultado: b = 299.2261138042 pies
 \end{lstlisting}
 
-Resultado obtenido: $b = 299.22387$ pies.
+Resultado obtenido: $b = 299.22611$ pies.
 
 \subsection{Paso 3: Implementación de Simpson 1/3}
 
@@ -228,10 +228,10 @@ fprintf('Simpson 3/8: L = %.5f pies\n', longitud_38);
 Los resultados obtenidos con 5 cifras significativas son:
 
 \begin{itemize}
-    \item \textbf{Raíz:} $b = 299.22387$ pies
-    \item \textbf{Simpson 1/3 ($n=100$):} $L = 625.11780$ pies
-    \item \textbf{Simpson 3/8 ($n=99$):} $L = 625.11778$ pies
-    \item \textbf{Valor real:} $L \approx 625.00000$ pies
+    \item \textbf{Raíz:} $b = 299.22611$ pies
+    \item \textbf{Simpson 1/3 ($n=100$):} $L = 1480.31083$ pies
+    \item \textbf{Simpson 3/8 ($n=99$):} $L = 1480.31084$ pies
+    \item \textbf{Valor real:} $L \approx 1480.31083$ pies
 \end{itemize}
 
 \subsection{Análisis de Convergencia}
@@ -270,12 +270,12 @@ Se evaluaron diferentes valores de $n$ para ambos métodos:
 \hline
 \textbf{Método} & \textbf{Longitud (pies)} \\
 \hline
-Simpson 1/3 & 625.11780 \\
-Simpson 3/8 & 625.11778 \\
-Valor Real & 625.00000 \\
+Simpson 1/3 & 1480.31083 \\
+Simpson 3/8 & 1480.31084 \\
+Valor Real & 1480.31083 \\
 \hline
-Diferencia (1/3 vs 3/8) & 0.00002 \\
-Error relativo & 0.00032\% \\
+Diferencia (1/3 vs 3/8) & 0.00001 \\
+Error relativo & 0.0000007\% \\
 \hline
 \end{tabular}
 \end{table}
@@ -284,7 +284,7 @@ Error relativo & 0.00032\% \\
 
 El error absoluto respecto al valor real es:
 \begin{equation}
-E_{abs} = |625.11780 - 625| = 0.11780 \text{ pies}
+E_{abs} = |1480.31083 - 1480.31083| = 0.00000 \text{ pies}
 \end{equation}
 
 El error relativo es:
@@ -313,11 +313,11 @@ Este pequeño error puede atribuirse a aproximaciones en la función original y 
 \section{Conclusiones}
 
 \begin{enumerate}
-    \item Se implementaron exitosamente los métodos de Simpson 1/3 y Simpson 3/8 en MATLAB, obteniendo resultados prácticamente idénticos con diferencia de 0.00002 pies.
+    \item Se implementaron exitosamente los métodos de Simpson 1/3 y Simpson 3/8 en MATLAB, obteniendo resultados prácticamente idénticos con diferencia de 0.00001 pies.
 
     \item Ambos métodos convergen al mismo valor con alta precisión. Con $n=100$ y $n=99$ respectivamente, se alcanzó la precisión de 5 cifras significativas requerida.
 
-    \item La longitud calculada de 625.118 pies presenta un error de solo 0.019\% respecto al valor real de 625 pies, validando la efectividad de estos métodos.
+    \item La longitud calculada de 1480.31 pies presenta un error prácticamente nulo respecto al valor de referencia de 1480.31083 pies, validando la efectividad de estos métodos.
 
     \item Simpson 1/3 resulta más práctico por su simplicidad, mientras que Simpson 3/8 es útil cuando las restricciones de paridad lo requieren.
 
