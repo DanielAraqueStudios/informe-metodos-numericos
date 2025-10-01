@@ -14,7 +14,7 @@ Este repositorio contiene la solución completa al **Ejercicio 6.7.13** sobre el
 ## 👥 Autores
 
 - **Sebastián Andrés Rodríguez Carrillo** - est.sebastian.arod2@unimilitar.edu.co
-- **David Andrés Rodríguez Rozo** - est.david.arodrigu1@unimilitar.edu.co
+- **Daniel García Araque** - est.daniel.garciaa@unimilitar.edu.co
 - **José Luis López** - est.jose.llopez@unimilitar.edu.co
 - **Diego Alejandro Rodríguez Gómez** - est.diego.arodrigu1@unimilitar.edu.co
 
