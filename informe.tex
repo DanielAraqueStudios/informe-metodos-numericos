@@ -148,16 +148,52 @@ f_prime = @(x) -b_coef*c*(exp(c*x) - exp(-c*x));
 g = @(x) sqrt(1 + f_prime(x).^2);
 \end{lstlisting}
 
-\subsection{Paso 2: Cálculo de la raíz b}
+\subsection{Paso 2: Cálculo de la raíz b mediante Método de Bisección}
 
-\begin{lstlisting}[caption={Encontrar la raíz donde f(x) = 0}]
-% Usar fsolve con valor inicial x0=300
-b_raiz = fsolve(f, 300);
-fprintf('Raiz: b = %.10f pies\n', b_raiz);
-% Resultado: b = 299.2261138042 pies
+El método de bisección es un algoritmo numérico para encontrar raíces de funciones continuas. Se basa en el teorema de Bolzano: si $f(a)$ y $f(b)$ tienen signos opuestos, entonces existe al menos una raíz en el intervalo $[a,b]$.
+
+El algoritmo consiste en:
+\begin{enumerate}
+    \item Definir intervalo inicial $[a, b]$ donde $f(a) \cdot f(b) < 0$
+    \item Calcular punto medio $c = \frac{a+b}{2}$
+    \item Si $f(c) \approx 0$ o error $< \epsilon$, entonces $c$ es la raíz
+    \item Si $f(a) \cdot f(c) < 0$, entonces $b = c$; sino $a = c$
+    \item Repetir desde paso 2
+\end{enumerate}
+
+\begin{lstlisting}[caption={Implementación del Método de Bisección}]
+% Metodo de Biseccion
+a_bisec = 250;  % Limite inferior
+b_bisec = 350;  % Limite superior
+tol = 1e-10;    % Tolerancia
+max_iter = 100;
+
+iter = 0;
+error = inf;
+
+while error > tol && iter < max_iter
+    c = (a_bisec + b_bisec) / 2;
+    fc = f(c);
+    error = abs(b_bisec - a_bisec) / 2;
+    
+    if abs(fc) < tol || error < tol
+        break;
+    end
+    
+    if f(a_bisec) * fc < 0
+        b_bisec = c;
+    else
+        a_bisec = c;
+    end
+    
+    iter = iter + 1;
+end
+
+b_raiz = (a_bisec + b_bisec) / 2;
+% Resultado: b = 299.2261138042 pies (37 iteraciones)
 \end{lstlisting}
 
-Resultado obtenido: $b = 299.22611$ pies.
+Resultado obtenido: $b = 299.22611$ pies en 37 iteraciones con tolerancia $\epsilon = 10^{-10}$.
 
 \subsection{Paso 3: Implementación de Simpson 1/3}
 

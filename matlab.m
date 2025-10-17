@@ -48,13 +48,57 @@ fprintf('  g(x) = sqrt(1 + (f''(x))^2)\n\n');
 % =========================================================================
 
 fprintf('========================================================================\n');
-fprintf('PASO 2: Encontrar la raiz b (donde f(x) = 0)\n');
+fprintf('PASO 2: Encontrar la raiz b (donde f(x) = 0) usando Metodo de Biseccion\n');
 fprintf('------------------------------------------------------------------------\n');
 
-% Usar fzero para encontrar la raiz (mas robusto que fsolve)
-b_raiz = fzero(f, [250, 350]);
+% Metodo de Biseccion
+a_bisec = 250;  % Limite inferior
+b_bisec = 350;  % Limite superior
+tol = 1e-10;    % Tolerancia
+max_iter = 100; % Maximo numero de iteraciones
 
+fprintf('Metodo de Biseccion:\n');
+fprintf('Intervalo inicial: [%.2f, %.2f]\n', a_bisec, b_bisec);
+fprintf('Tolerancia: %.2e\n', tol);
+fprintf('\n');
+fprintf('  Iter     a           b           c           f(c)         Error\n');
+fprintf('  ----   --------    --------    --------    ----------   --------\n');
+
+iter = 0;
+error = inf;
+
+while error > tol && iter < max_iter
+    c = (a_bisec + b_bisec) / 2;  % Punto medio
+    fc = f(c);
+    error = abs(b_bisec - a_bisec) / 2;
+    
+    if mod(iter, 10) == 0 || iter < 5  % Mostrar solo algunas iteraciones
+        fprintf('  %4d   %.6f   %.6f   %.6f   %.6e   %.6e\n', ...
+                iter, a_bisec, b_bisec, c, fc, error);
+    end
+    
+    if abs(fc) < tol || error < tol
+        break;
+    end
+    
+    % Actualizar el intervalo
+    if f(a_bisec) * fc < 0
+        b_bisec = c;
+    else
+        a_bisec = c;
+    end
+    
+    iter = iter + 1;
+end
+
+b_raiz = (a_bisec + b_bisec) / 2;
+
+fprintf('  ...\n');
+fprintf('  %4d   %.6f   %.6f   %.6f   %.6e   %.6e\n', ...
+        iter, a_bisec, b_bisec, b_raiz, f(b_raiz), error);
+fprintf('\n');
 fprintf('Raiz encontrada: b = %.10f pies\n', b_raiz);
+fprintf('Numero de iteraciones: %d\n', iter);
 fprintf('Verificacion: f(b) = %.10e\n', f(b_raiz));
 fprintf('Altura del arco: f(0) = %.4f pies (debe ser ~630 pies)\n', f(0));
 fprintf('Ancho total del arco: 2*b = %.4f pies (debe ser ~630 pies)\n\n', 2*b_raiz);
