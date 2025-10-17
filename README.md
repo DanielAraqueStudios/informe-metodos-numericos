@@ -81,11 +81,12 @@ Calcular la longitud total del arco del Gateway Arch de San Luis usando métodos
 
 ### Implementación MATLAB
 - **Funciones principales**:
+  - `biseccion()` - Método de bisección para encontrar raíces (implementado inline)
   - `simpson_1_3()` - Método de Simpson 1/3 con validación n par
   - `simpson_3_8()` - Método de Simpson 3/8 con validación múltiplo de 3
-  - `fzero()` - Búsqueda robusta de raíces con bracketing
 - **Características avanzadas**:
-  - Análisis de convergencia automatizado
+  - Implementación completa del método de bisección con tabla de convergencia
+  - Análisis de convergencia automatizado para métodos de Simpson
   - 6 visualizaciones gráficas profesionales
   - Validación de resultados con alta precisión (n=1000)
   - Cálculo detallado de errores absolutos y relativos
@@ -97,30 +98,34 @@ Calcular la longitud total del arco del Gateway Arch de San Luis usando métodos
 
 ## 📊 Resultados y Hallazgos
 
-### Resultados del Informe LaTeX
-- **Longitud calculada**: 625.118 pies con ambos métodos
+### Resultados Actualizados (Usando constantes de MATLAB)
+- **Constantes utilizadas**: 
+  - `a = 693.8597`
+  - `b_coef = 68.7672`
+  - `c = 0.0100333`
+- **Raíz encontrada**: b = 299.22611 pies (37 iteraciones con método de bisección)
+- **Longitud calculada**: 1480.31 pies con ambos métodos
 - **Precisión alcanzada**: 5 cifras significativas según especificación
-- **Error relativo**: 0.019% respecto al valor real (625 pies)
-- **Convergencia**: Ambos métodos convergen al mismo valor con alta precisión
+- **Error relativo**: Prácticamente nulo (0.0000007%) entre métodos
 
 ### Análisis de Convergencia (MATLAB)
 | Método | n | Integral | Longitud (pies) |
 |--------|---|----------|----------------|
-| Simpson 1/3 | 100 | 312.5589 | **625.1178** |
-| Simpson 3/8 | 99 | 312.5589 | **625.1178** |
-| Valor Real | - | - | 625.0000 |
+| Simpson 1/3 | 100 | 740.1554 | **1480.31083** |
+| Simpson 3/8 | 99 | 740.1554 | **1480.31084** |
+| Valor Referencia | 1000 | - | 1480.31083 |
 
 ### Validación Técnica
-- **Diferencia entre métodos**: < 0.00002 pies (excelente concordancia)
-- **Raíz encontrada**: b ≈ 299.22 pies (punto donde f(x) = 0)
-- **Verificación dimensional**: Altura ≈ 630 pies, Ancho ≈ 630 pies ✅
+- **Diferencia entre métodos**: < 0.00001 pies (excelente concordancia)
+- **Raíz encontrada (bisección)**: b = 299.22611 pies en 37 iteraciones
+- **Verificación dimensional**: Altura ≈ 625 pies, Ancho ≈ 598 pies
+- **Método de bisección**: Tolerancia 1×10⁻¹⁰ alcanzada exitosamente
 
-### ⚠️ **Nota Técnica Importante**
-El código MATLAB actual tiene constantes que difieren del informe LaTeX:
-- **MATLAB**: `a = 693.8597, c = 0.0100333`
-- **LaTeX**: `a = 639.8507, c = 0.01003611`
-
-Se recomienda sincronizar las constantes para consistencia completa entre implementación y reporte.
+### ✅ **Sincronización Completa**
+El código MATLAB y el informe LaTeX están ahora completamente sincronizados:
+- **Constantes unificadas**: `a = 693.8597, c = 0.0100333`
+- **Método de raíces**: Bisección implementado y documentado en ambos
+- **Resultados consistentes**: Todos los valores actualizados en ambos documentos
 
 ## 🚀 Ejecución del Proyecto
 
@@ -149,17 +154,21 @@ pdflatex informe.tex
 matlab.m
 
 % El script ejecuta automáticamente:
-% 1. Cálculo de raíz del Gateway Arch
-% 2. Implementación Simpson 1/3 y 3/8
-% 3. Análisis de convergencia
-% 4. Generación de 6 gráficas
-% 5. Comparación de resultados
+% 1. Definición de funciones y constantes
+% 2. Cálculo de raíz usando método de bisección (37 iteraciones)
+% 3. Implementación Simpson 1/3 y 3/8
+% 4. Análisis de convergencia con múltiples valores de n
+% 5. Generación de 6 gráficas profesionales
+% 6. Comparación de resultados y análisis de errores
 ```
 
 #### Salidas Generadas
-- **Resultados numéricos**: Longitud del arco con precisión de 5 cifras
+- **Resultados numéricos**: 
+  - Tabla de convergencia del método de bisección
+  - Longitud del arco con precisión de 5 cifras significativas
+  - Análisis de errores absolutos y relativos
 - **Gráficas automatizadas**:
-  1. **Gateway Arch**: Forma del arco con puntos clave
+  1. **Gateway Arch**: Forma del arco con puntos clave y raíz marcada
   2. **Derivada f'(x)**: Comportamiento de la pendiente
   3. **Integrando g(x)**: Función bajo la integral
   4. **Convergencia Simpson 1/3**: Análisis de precisión vs n
