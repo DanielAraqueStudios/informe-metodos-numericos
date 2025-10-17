@@ -95,6 +95,31 @@ El objetivo es implementar los métodos de Simpson 1/3 y Simpson 3/8 para resolv
 
 \section{Marco Teórico}
 
+\subsection{Método de Bisección}
+
+El método de bisección es un algoritmo numérico para encontrar raíces de ecuaciones. Se fundamenta en el teorema del valor intermedio (Teorema de Bolzano): si una función continua $f(x)$ cambia de signo en un intervalo $[a,b]$, entonces existe al menos una raíz en dicho intervalo.
+
+El algoritmo iterativo es:
+
+\begin{enumerate}
+    \item Verificar que $f(a) \cdot f(b) < 0$ (signos opuestos)
+    \item Calcular punto medio: $c = \frac{a+b}{2}$
+    \item Evaluar $f(c)$
+    \item Si $|f(c)| < \epsilon$ o $\frac{|b-a|}{2} < \epsilon$, entonces $c$ es la raíz
+    \item Si $f(a) \cdot f(c) < 0$, tomar nuevo intervalo $[a,c]$; sino $[c,b]$
+    \item Repetir desde paso 2
+\end{enumerate}
+
+El error en cada iteración se reduce a la mitad:
+\begin{equation}
+\epsilon_n = \frac{b-a}{2^{n+1}}
+\end{equation}
+
+Para alcanzar una tolerancia $\epsilon$, el número de iteraciones requeridas es:
+\begin{equation}
+n \geq \frac{\ln(b-a) - \ln(\epsilon)}{\ln(2)}
+\end{equation}
+
 \subsection{Longitud de Arco}
 
 La longitud de una curva definida por $y = f(x)$ entre $x = a$ y $x = b$ se calcula mediante:
