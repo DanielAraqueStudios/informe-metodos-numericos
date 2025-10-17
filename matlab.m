@@ -67,10 +67,20 @@ fprintf('  ----   --------    --------    --------    ----------   --------\n');
 iter = 0;
 error = inf;
 
+% Arrays para almacenar datos de convergencia
+iteraciones_bisec = [];
+errores_bisec = [];
+raices_bisec = [];
+
 while error > tol && iter < max_iter
     c = (a_bisec + b_bisec) / 2;  % Punto medio
     fc = f(c);
     error = abs(b_bisec - a_bisec) / 2;
+    
+    % Guardar datos de convergencia
+    iteraciones_bisec = [iteraciones_bisec; iter];
+    errores_bisec = [errores_bisec; error];
+    raices_bisec = [raices_bisec; c];
     
     if mod(iter, 10) == 0 || iter < 5  % Mostrar solo algunas iteraciones
         fprintf('  %4d   %.6f   %.6f   %.6f   %.6e   %.6e\n', ...
@@ -220,11 +230,11 @@ fprintf('=======================================================================
 fprintf('GENERANDO GRAFICAS...\n');
 fprintf('========================================================================\n\n');
 
-% Crear figura
-figure('Position', [100, 100, 1400, 900]);
+% Crear figura con 7 subgráficas (2 filas x 4 columnas)
+figure('Position', [50, 50, 1600, 900]);
 
 % Grafica 1: Gateway Arch
-subplot(2, 3, 1);
+subplot(2, 4, 1);
 x_arch = linspace(-b_raiz, b_raiz, 1000);
 y_arch = f(x_arch);
 plot(x_arch, y_arch, 'b-', 'LineWidth', 2.5);
@@ -233,15 +243,25 @@ fill([x_arch, fliplr(x_arch)], [y_arch, zeros(size(y_arch))], 'b', 'FaceAlpha', 
 plot([b_raiz, -b_raiz], [0, 0], 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r', 'LineWidth', 2);
 plot([0], [f(0)], 'go', 'MarkerSize', 10, 'MarkerFaceColor', 'g', 'LineWidth', 2);
 text(0, f(0)+30, sprintf('h = %.1f ft', f(0)), 'HorizontalAlignment', 'center', 'FontWeight', 'bold');
-text(b_raiz, -40, sprintf('b = %.1f ft', b_raiz), 'HorizontalAlignment', 'center', 'FontWeight', 'bold');
+text(b_raiz, -40, sprintf('b = %.1f ft (Bisección)', b_raiz), 'HorizontalAlignment', 'center', 'FontWeight', 'bold', 'Color', 'r');
 grid on;
 xlabel('x (pies)', 'FontWeight', 'bold');
 ylabel('y (pies)', 'FontWeight', 'bold');
-title('Gateway Arch de San Luis', 'FontWeight', 'bold', 'FontSize', 12);
+title('Gateway Arch de San Luis - Raíz por Bisección', 'FontWeight', 'bold', 'FontSize', 12);
 axis equal;
 
-% Grafica 2: Derivada f'(x)
-subplot(2, 3, 2);
+% Grafica 2: Convergencia Método de Bisección
+subplot(2, 4, 2);
+semilogy(iteraciones_bisec, errores_bisec, 'r-o', 'LineWidth', 2, 'MarkerSize', 6, 'MarkerFaceColor', 'r');
+hold on;
+yline(tol, '--k', 'LineWidth', 1.5, 'Label', sprintf('Tolerancia = %.0e', tol));
+grid on;
+xlabel('Iteración', 'FontWeight', 'bold');
+ylabel('Error (escala log)', 'FontWeight', 'bold');
+title('Convergencia: Método de Bisección', 'FontWeight', 'bold', 'FontSize', 12);
+
+% Grafica 3: Derivada f'(x)
+subplot(2, 4, 3);
 x_plot = linspace(0, b_raiz, 500);
 y_deriv = f_prime(x_plot);
 plot(x_plot, y_deriv, 'r-', 'LineWidth', 2);
@@ -253,8 +273,8 @@ xlabel('x (pies)', 'FontWeight', 'bold');
 ylabel('f''(x)', 'FontWeight', 'bold');
 title('Derivada f''(x) = -b*c*sinh(cx)', 'FontWeight', 'bold', 'FontSize', 12);
 
-% Grafica 3: Integrando g(x)
-subplot(2, 3, 3);
+% Grafica 4: Integrando g(x)
+subplot(2, 4, 4);
 y_g = g(x_plot);
 plot(x_plot, y_g, 'g-', 'LineWidth', 2);
 hold on;
@@ -264,8 +284,8 @@ xlabel('x (pies)', 'FontWeight', 'bold');
 ylabel('g(x)', 'FontWeight', 'bold');
 title('Integrando: g(x) = \surd(1+(f''(x))^2)', 'FontWeight', 'bold', 'FontSize', 12);
 
-% Grafica 4: Convergencia Simpson 1/3
-subplot(2, 3, 4);
+% Grafica 5: Convergencia Simpson 1/3
+subplot(2, 4, 5);
 plot(n_valores_13, longitudes_13_conv, 'bo-', 'LineWidth', 2, 'MarkerSize', 10, 'MarkerFaceColor', 'b');
 hold on;
 yline(longitud_exacta, '--r', 'LineWidth', 2, 'DisplayName', 'Referencia (n=1000)');
@@ -275,8 +295,8 @@ ylabel('Longitud (pies)', 'FontWeight', 'bold');
 title('Convergencia: Simpson 1/3', 'FontWeight', 'bold', 'FontSize', 12);
 legend('Simpson 1/3', 'Valor de referencia', 'Location', 'best');
 
-% Grafica 5: Convergencia Simpson 3/8
-subplot(2, 3, 5);
+% Grafica 6: Convergencia Simpson 3/8
+subplot(2, 4, 6);
 plot(n_valores_38, longitudes_38_conv, 'mo-', 'LineWidth', 2, 'MarkerSize', 10, 'MarkerFaceColor', 'm');
 hold on;
 yline(longitud_exacta, '--r', 'LineWidth', 2, 'DisplayName', 'Referencia (n=1000)');
@@ -286,8 +306,8 @@ ylabel('Longitud (pies)', 'FontWeight', 'bold');
 title('Convergencia: Simpson 3/8', 'FontWeight', 'bold', 'FontSize', 12);
 legend('Simpson 3/8', 'Valor de referencia', 'Location', 'best');
 
-% Grafica 6: Comparacion final
-subplot(2, 3, 6);
+% Grafica 7: Comparacion final
+subplot(2, 4, [7, 8]);  % Ocupa las últimas 2 posiciones
 metodos = {'Simpson 1/3', 'Simpson 3/8', 'Referencia'};
 longitudes = [longitud_13, longitud_38, longitud_exacta];
 colores = [0 0 1; 1 0 1; 1 0 0];
