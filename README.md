@@ -48,22 +48,26 @@ informe-metodos-numericos/
 Calcular la longitud total del arco del Gateway Arch de San Luis usando métodos de integración numérica de Simpson.
 
 ### Especificaciones Matemáticas
-- **Ecuación del Gateway Arch**: `f(x) = 639.8507 - 68.7672(e^{0.01003611x} + e^{-0.01003611x})`
+- **Ecuación del Gateway Arch**: `f(x) = 693.8597 - 68.7672(e^{0.0100333x} + e^{-0.0100333x})`
 - **Fórmula de longitud de arco**: `L = 2∫₀ᵇ √(1 + (f'(x))²) dx`
-- **Derivada**: `f'(x) = -0.68998(e^{0.01003611x} - e^{-0.01003611x})`
+- **Derivada**: `f'(x) = -0.68999(e^{0.0100333x} - e^{-0.0100333x})`
 - **Límite de integración**: `b` donde `f(x) = 0`
 
 ### Especificaciones del Gateway Arch Real
 - **Altura**: 630 pies
 - **Ancho en la base**: 630 pies  
-- **Longitud del arco**: ~625 pies
+- **Longitud del arco curvo**: ~1480 pies (siguiendo la curva del arco)
 - **Forma**: Catenaria invertida (coseno hiperbólico)
 
 ### Métodos Implementados
-1. **Simpson 1/3**: Requiere n par, error O(h⁴)
-2. **Simpson 3/8**: Requiere n múltiplo de 3, error O(h⁴)
-3. **Análisis de convergencia**: Múltiples valores de n
-4. **Validación**: Comparación con valor de referencia
+1. **Método de Bisección**: Para encontrar la raíz b donde f(x) = 0
+   - Intervalo inicial: [250, 350]
+   - Tolerancia: 1×10⁻¹⁰
+   - Convergencia garantizada por Teorema de Bolzano
+2. **Simpson 1/3**: Requiere n par, error O(h⁴)
+3. **Simpson 3/8**: Requiere n múltiplo de 3, error O(h⁴)
+4. **Análisis de convergencia**: Múltiples valores de n
+5. **Validación**: Comparación con valor de referencia
 
 ## 🛠️ Tecnologías y Herramientas
 
